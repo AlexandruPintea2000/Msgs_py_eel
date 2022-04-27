@@ -1,0 +1,30 @@
+CREATE DATABASE dbase;
+
+CREATE TABLE dbase.users (
+	id int, 
+    username varchar(255),
+    password varchar(255),
+    fullname varchar(255),
+    age int,
+    is_admin int,
+    email varchar(255)
+);
+
+CREATE TABLE dbase.talks (
+	id int, 
+    send_id int, 
+    get_id int, 
+    message varchar(255)
+);
+
+INSERT INTO dbase.users VALUES ( 0, "admin", "password1", "admin1 full name", 34, 1, "email1@email.com" );
+INSERT INTO dbase.users VALUES ( 1, "user", "password2", "user1 full name", 43, 0, "email2@email.com" );
+
+INSERT INTO dbase.talks VALUES ( 1, 0, 1, "question 1" );
+INSERT INTO dbase.talks VALUES ( 2, 0, 1, "question 2" );
+INSERT INTO dbase.talks VALUES ( 3, 0, 1, "question 3" );
+INSERT INTO dbase.talks VALUES ( 4, 1, 0, "answer 0" );
+INSERT INTO dbase.talks VALUES ( 5, 1, 0, "answer 1" );
+INSERT INTO dbase.talks VALUES ( 6, 1, 0, "answer 2" );
+INSERT INTO dbase.talks VALUES ( 7, 1, 0, "answer 3" );
+INSERT INTO dbase.talks VALUES ( 0, 0, 1, "question 0" );

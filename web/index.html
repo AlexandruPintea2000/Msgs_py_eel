@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Napier Exercise App</title>
+</head>
+<body>
+
+<style>
+
+	body
+	{
+		font-size: 23px;
+	}
+
+	input
+	{
+		font-size: 23px;
+	}
+
+	a
+	{
+		display: inline-block;
+		font-size: 20px;
+		padding: 10px 15px;
+		transition: 0.2s;
+		text-decoration: none;
+		color: rgb(214, 214, 214);
+		background-color: rgb(34, 34, 34);
+		border-radius: 10px 10px 15px 0px;
+		cursor: pointer;
+  	}
+
+	a:hover
+	{
+		color: white;
+  	}
+
+
+  	.text_div
+  	{
+  		padding: 10px;
+  		background-color: rgb(243, 243, 243);
+  		border: 4px solid rgb(123, 123, 123);
+  		margin: 10px;
+		border-radius: 23px;
+  	}
+
+  	.title
+  	{
+  		padding: 10px;
+  		background-color: rgb(243, 243, 243);
+  		border: 1px solid rgb(123, 123, 123);
+		border-radius: 23px;
+  		text-align: center;
+  	}
+
+  	p
+  	{
+  		margin: 7px;
+  	}
+
+</style>
+
+<script type="text/javascript" src="/eel.js"></script>
+
+<h1 class="title" id="home" >Messages in Python with Eel</h1>
+
+<div id="users">
+	<h2 class="title">User</h2>
+	<div class="text_div"> 
+	<center>
+	<table>
+		<tr> 
+			<td>
+			    <p style="text-align: center; font-size: 27px;"> Edit User </p>
+
+				<center>
+			    <table>
+			            <tr> <td> Username: </td> <td> <input class="user_input" type="text" placeholder="Your unique username"> </input> </td> </tr>
+			            <tr> <td> Password: </td> <td> <input class="user_input" type="text" placeholder="Password"> </input> </td> </tr>
+			            <tr> <td> Full name: </td> <td> <input class="user_input" type="text" placeholder="Both first and last name"> </input> </td> </tr>
+			            <tr> <td> Age: </td> <td> <input class="user_input" type="number" placeholder="25"> </input> </td> </tr>
+			            <tr> <td> Email: </td> <td> <input class="user_input" type="email" placeholder="Your valid email"> </input> </td> </tr>
+
+			            <tr> <td><input type="button" onclick="update( 'user_input' )" value="Update"> </input></td> <td> <a onclick="delete_logged_user()"> Delete user </a> </td> </tr>
+
+			            <tr> <td> <br> </td> <td> </td> </tr>
+
+			            <tr> <td> Send talk: </td> <td> <input class="user_talks_input" type="text" placeholder="User to send to"> </input> </td> </tr>
+			            <tr> <td> Message: </td> <td> <textarea class="user_talks_input" style="max-width: 290px; min-width: 290px; font-size: 15px; min-height: 100px; max-height: 240px;"> </textarea> </td> </tr>
+			            <tr> <td>  </td> <td> <input type="button" onclick="send_talk( 'user_talks_input' )" value="Send">  </input> </td> </tr>
+
+			            <div style="display:none;" id="hidden_user_send"> </div>
+			            <div style="display:none;" id="hidden_user_get"> </div>
+			            <div style="display:none;" id="hidden_admin_send"> </div>
+			            <div style="display:none;" id="hidden_admin_get"> </div>
+			            <div style="display:none;" id="hidden_admin_users"> </div>
+
+
+			    </table>
+				</center>
+			</td>
+
+			<td>
+				<center>
+				<p style="text-align: center; font-size: 27px;"> Talks you sent </p>
+
+			    <table id="user_send_messages">
+			        <tr> <th> To </th> <th> Message </th> </tr>
+			        <tr> <td> username_1 </td> <td> message_1 </td> </tr>
+			        <tr> <td> username_2 </td> <td> message_2 </td> </tr>
+			    </table>
+				</center>
+
+				<center>
+			    <p style="text-align: center; font-size: 27px;"> Talks you got </p>
+
+			    <table id="user_get_messages">
+			        <tr> <th> From </th> <th> Message </th> </tr>
+			        <tr> <td> username_1 </td> <td> message_3 </td> </tr>
+			        <tr> <td> username_2 </td> <td> message_4 </td> </tr>
+			    </table>
+
+			    <a onclick="log_out()"> Log out </a>
+				</center>
+			</td>
+		</tr>
+
+	</table>
+	</center>
+
+	</div>
+</div>
+
+<div id="admin">
+	<h2 class="title">Admin</h2>
+	<div class="text_div"> 
+	<center>
+	<table>
+		<tr> 
+			<td>
+			    <p style="text-align: center; font-size: 27px;"> Edit User </p>
+
+				<center>
+			    <table>
+			            <tr> <td> Username: </td> <td> <input class="admin_input" type="text" placeholder="Your unique username"> </input> </td> </tr>
+			            <tr> <td> Password: </td> <td> <input class="admin_input" type="text"  placeholder="Password"> </input> </td> </tr>
+			            <tr> <td> Full name: </td> <td> <input class="admin_input" type="text" placeholder="Both first and last name"> </input> </td> </tr>
+			            <tr> <td> Age: </td> <td> <input class="admin_input" type="number" placeholder="25"> </input> </td> </tr>
+			            <tr> <td> Email: </td> <td> <input class="admin_input" type="email" placeholder="Your valid email"> </input> </td> </tr>
+
+			            <tr> <td><input type="button" onclick="update( 'user_input' )"  value="Update"> </input></td> <td> <a onclick="delete_logged_user()"> Delete user </a> </td> </tr>
+
+			            <tr> <td> <br> </td> <td> </td> </tr>
+
+			            <tr> <td> Send talk: </td> <td> <input class="admin_talks_input" type="text" placeholder="User to send to"> </input> </td> </tr>
+			            <tr> <td> Message: </td> <td> <textarea class="admin_talks_input" style="max-width: 290px; min-width: 290px; font-size: 15px; min-height: 100px; max-height: 240px;"> </textarea> </td> </tr>
+			            <tr> <td>  </td> <td> <input type="button" value="Send" onclick="send_talk( 'admin_talks_input' )">  </input> </td> </tr>
+			    </table>
+				</center>
+			</td>
+
+			<td>
+			    <p style="text-align: center; font-size: 27px;"> Talks you sent </p>
+
+				<center>
+			    <table id="admin_send_messages">
+			        <tr> <th> To </th> <th> Message </th>  <th> Delete </th> </tr>
+			        <tr> <td> username_1 </td> <td> message_1 </td> <td> <a> Delete </a> </td> </tr>
+			        <tr> <td> username_2 </td> <td> message_2 </td> <td> <a> Delete </a> </td> </tr>
+			    </table>
+				</center>
+
+			    <p style="text-align: center; font-size: 27px;"> Talks you got </p>
+
+				<center>
+			    <table id="admin_get_messages">
+			        <tr> <th> From </th> <th> Message </th>  <th> Delete </th>  </tr>
+			        <tr> <td> username_1 </td> <td> message_3 </td> <td> <a> Delete </a> </td> </tr>
+			        <tr> <td> username_2 </td> <td> message_4 </td> <td> <a> Delete </a> </td> </tr>
+			    </table>
+				</center>
+
+			    <p style="text-align: center; font-size: 27px;"> Users </p>
+
+			    <a onclick="log_out()"> Log out </a>
+			</td>
+		</tr>
+
+	</table>
+	</center>
+
+	</div>
+</div>
+
+<div id="signin">
+<h2 class="title">Sign up / Log in</h2>
+<div class="text_div"> 
+	<center>
+	<table>
+		<tr> 
+			<td>
+			    <p style="text-align: center; font-size: 27px;"> Sign Up </p>
+
+			    <table>
+			        <tr> <td> Username: </td> <td> <input class="signup_input" type="text" placeholder="Retry until unique"> </input> </td> </tr>
+			        <tr> <td> Password: </td> <td> <input class="signup_input" name="password" placeholder="Password"> </input> </td> </tr>
+			        <tr> <td> Full name: </td> <td> <input class="signup_input" name="fullname" placeholder="Both first and last name"> </input> </td> </tr>
+			        <tr> <td> Age: </td> <td> <input class="signup_input" type="text" placeholder="25"> </input> </td> </tr>
+			        <tr> <td> Email: </td> <td> <input class="signup_input" type="email" placeholder="Your valid email"> </input> </td> </tr>
+
+			        <tr> <td><input id="signup_submit" type="button" value="Sign Up" onclick="send_signup_user()"> </input></td> <td> </td> </tr>
+			    </table>
+
+				<script>
+				    // eel.expose(load);
+				    // function load ( url )
+				    // {
+				    //     location.replace( url );
+				    // }
+
+
+
+				    function signin ()
+				    {
+				        if ( localStorage.getItem( "id" ) == null )
+				        {
+				        	document.getElementById( "signin" ).style.display = "initial";
+				        	document.getElementById( "users" ).style.display = "none";
+				        	document.getElementById( "admin" ).style.display = "none";
+				        }
+				        else
+				        {
+				        	// // console.log(localStorage.getItem( "is_admin" ));
+				            if ( localStorage.getItem( "is_admin" ) == 0 )
+					        {
+					        	document.getElementById( "signin" ).style.display = "none";
+					        	document.getElementById( "users" ).style.display = "initial";
+					        	document.getElementById( "admin" ).style.display = "none";
+
+					        	var inputs = document.getElementsByClassName( "user_input" );
+					        	inputs[0].value = localStorage.getItem( "username" );
+					        	inputs[1].value = localStorage.getItem( "password" );
+					        	inputs[2].value = localStorage.getItem( "fullname" )
+					        	inputs[3].value = localStorage.getItem( "age" )
+					        	inputs[4].value = localStorage.getItem( "email" );
+					        }
+				            else
+					        {
+					        	document.getElementById( "signin" ).style.display = "none";
+					        	document.getElementById( "users" ).style.display = "none";
+					        	document.getElementById( "admin" ).style.display = "initial";
+
+					        	var inputs = document.getElementsByClassName( "admin_input" );
+					        	inputs[0].value = localStorage.getItem( "username" );
+					        	inputs[1].value = localStorage.getItem( "password" );
+					        	inputs[2].value = localStorage.getItem( "fullname" )
+					        	inputs[3].value = localStorage.getItem( "age" )
+					        	inputs[4].value = localStorage.getItem( "email" );
+					        }
+				        }
+				    }
+
+				    signin();
+
+				    function send_signup_user() 
+				    {
+				        var user = [];
+				        var inputs = document.getElementsByClassName( "signup_input" );
+				        // // console.log(inputs);
+				        for ( i = 0; i < inputs.length; i = i + 1 )
+				             user.push( inputs[i].value ); // does not function
+				        // // console.log(user);
+
+				        var user_id;
+						eel.add_user( user[0], user[1], user[2], Number( user[3] ), 0, user[4] )(function(number)
+						{
+							if ( number == 0 )
+							{
+								console.log( "Sign up failed." );
+						        var inputs = document.getElementsByClassName( "signup_input" );
+					        	inputs[0].value = "";
+							}
+							else
+							{
+						        var inputs = document.getElementsByClassName( "signup_input" );
+						        for ( i = 1; i < inputs.length; i = i + 1 )
+						        	inputs[i].value = "";
+
+								user_id = number;
+						        // // console.log( user_id );
+						        localStorage.setItem( "id", Number( user_id[0] ) );
+						        localStorage.setItem( "username", user_id[1] );
+						        localStorage.setItem( "password", user_id[2] );
+						        localStorage.setItem( "fullname", user_id[3] );
+						        localStorage.setItem( "age", Number( user_id[4] ) );
+						        localStorage.setItem( "is_admin", Number( user_id[5] ) );
+						        localStorage.setItem( "email", user_id[6] );
+						        // localStorage.setItem( "user", { "id": Number( user_id[0] ), "username": user_id[1], "password": user_id[2], "fullname": user_id[3], "age": Number( user_id[4] ), "is_admin": Number( user_id[5] ), "email": user_id[6]  } );
+							    signin();
+							}
+						});
+
+				    }
+
+				</script>
+			</td>
+
+			<td>
+			    <p style="text-align: center; font-size: 27px;"> Log In </p>
+
+			    <table>
+			        <tr> <td> Username: </td> <td> <input class="log_in_input" type="text" name="username" placeholder="Your username"> </input> </td> </tr>
+			        <tr> <td> Password: </td> <td> <input class="log_in_input" type="password" name="password" placeholder="Password"> </input> </td> </tr>
+
+			        <tr> <td><input type="submit" name="submit" onclick="send_log_in_user()" value="Log In"> </input></td> <td> </td> </tr>
+			    </table>
+
+			    <script>
+			    	function send_log_in_user ()
+			    	{
+				        var user = [];
+				        var inputs = document.getElementsByClassName( "log_in_input" );
+				        // console.log(inputs);
+				        for ( i = 0; i < inputs.length; i = i + 1 )
+				             user.push( inputs[i].value ); // does not function
+				        // console.log(user);
+
+				        for ( i = 0; i < inputs.length; i = i + 1 )
+				        	inputs[i].value = "";
+
+						eel.get_user( user[0], user[1] )(function(number)
+						{
+							if ( number == -1 )
+							{
+								// console.log( "Log in failed." );
+								return;
+							}
+
+							user_id = number;
+					        // console.log( user_id );
+					        localStorage.setItem( "id", Number( user_id[0] ) );
+					        localStorage.setItem( "username", user_id[1] );
+					        localStorage.setItem( "password", user_id[2] );
+					        localStorage.setItem( "fullname", user_id[3] );
+					        localStorage.setItem( "age", Number( user_id[4] ) );
+					        localStorage.setItem( "is_admin", Number( user_id[5] ) );
+					        localStorage.setItem( "email", user_id[6] );
+					        // localStorage.setItem( "user", { "id": Number( user_id[0] ), "username": user_id[1], "password": user_id[2], "fullname": user_id[3], "age": Number( user_id[4] ), "is_admin": Number( user_id[5] ), "email": user_id[6]  } );
+						    signin();
+						});
+					}
+			    </script>
+
+			</td>
+		</tr>
+
+	</table>
+	</center>
+
+</div>
+</div>
+
+<script>
+
+	function log_out ()
+	{
+		localStorage.clear();
+        signin();
+	}
+
+
+    function delete_logged_user()
+    {
+    	eel.delete_user( localStorage.getItem( "id" ) );
+        log_out();
+    }
+
+</script>
+
+<script>
+	function send_talk( class_name ) 
+    {
+        var user = [];
+        var inputs = document.getElementsByClassName( class_name );
+        console.log(inputs);
+        for ( i = 0; i < inputs.length; i = i + 1 )
+             user.push( inputs[i].value ); // does not function
+       	console.log(user);
+
+        for ( i = 0; i < inputs.length; i = i + 1 )
+        	inputs[i].value = "";
+
+		localStorage.setItem( "message", user[1] );
+
+		eel.get_user_just_though_username( user[0] )(function(usr)
+		{
+			if ( usr == 0 )
+				console.log( "Log in failed." );
+			else
+			{
+				eel.add_talk( Number( localStorage.getItem( "id" )), Number( usr[0] ), localStorage.getItem( "message" ) );
+				localStorage.removeItem( "message" );
+			}
+		});
+
+		refresh_talks();
+    }
+
+	function admin_deletes_talk( id )
+    {
+    	eel.delete_talk( id );
+    	refresh_talks();
+    }
+
+    function refresh_talks ()
+    {
+    	eel.get_send_talks_for_user( Number( localStorage.getItem( "id" ) ) )(function(talks)
+		{
+			var talk = JSON.parse( talks );
+			console.log( talk );
+
+			if ( localStorage.getItem( "is_admin" ) == 0 )
+				document.getElementById( "user_send_messages" ).innerHTML = "<tr> <th> To </th> <th> Message </th> </tr>";
+			else
+				document.getElementById( "admin_send_messages" ).innerHTML = "<tr> <th> To </th> <th> Message </th>  <th> Delete </th> </tr>";
+
+			document.getElementById( "hidden_user_send" ).innerHTML = talks;
+			document.getElementById( "hidden_admin_send" ).innerHTML = talks;
+			
+			for ( i = 0; i < talk.length; i = i + 1 )
+			{
+				eel.get_user_just_though_id( Number( talk[i].get_id ) )(function(user)
+				{
+					var username = user[1];
+
+					// console.log( user );
+					// console.log( username );
+
+					if ( localStorage.getItem( "is_admin" ) == 0 )
+					{
+						var ht = "<tr> <td> " + username + " </td> <td class='the_user_send_messages'> </td> </tr>";
+
+						var table =  document.getElementById( "user_send_messages" );
+
+						table.innerHTML = table.innerHTML + ht;
+
+						j = table.childElementCount - 2;
+
+						tlk = JSON.parse( document.getElementById( "hidden_user_send" ).innerHTML );
+
+						var messages = document.getElementsByClassName( "the_user_send_messages" );
+						messages[j].innerHTML = tlk[j].message;
+					}
+					else
+					{
+						var ht = "<tr> <td> " + username + " </td> <td class='the_admin_send_messages'> </td> <td> <a class='admin_delete_send_talk'> Delete </a> </td> </tr>";
+
+						var table =  document.getElementById( "admin_send_messages" );
+
+						table.innerHTML = table.innerHTML + ht;
+
+						j = table.childElementCount - 2;
+
+						tlk = JSON.parse( document.getElementById( "hidden_admin_send" ).innerHTML );
+
+						var messages = document.getElementsByClassName( "the_admin_send_messages" );
+						messages[j].innerHTML = tlk[j].message;
+
+						messages = document.getElementsByClassName( "admin_delete_send_talk" );
+						messages[j].setAttribute( "onclick", "admin_deletes_talk(" + String( tlk[j].id ) + ")" );
+					}
+				});
+
+				localStorage.removeItem( "message" );
+			}
+
+		});
+
+    	eel.get_get_talks_for_user( Number( localStorage.getItem( "id" ) ) )(function(talks)
+		{
+			var talk = JSON.parse( talks );
+			console.log( talk );
+
+			if ( localStorage.getItem( "is_admin" ) == 0 )
+				document.getElementById( "user_get_messages" ).innerHTML = "<tr> <th> From </th> <th> Message </th> </tr>";
+			else
+				document.getElementById( "admin_get_messages" ).innerHTML = "<tr> <th> From </th> <th> Message </th>  <th> Delete </th> </tr>";
+
+			document.getElementById( "hidden_user_get" ).innerHTML = talks;
+			document.getElementById( "hidden_admin_get" ).innerHTML = talks;
+			
+			for ( i = 0; i < talk.length; i = i + 1 )
+			{
+				eel.get_user_just_though_id( Number( talk[i].send_id ) )(function(user)
+				{
+					var username = user[1];
+
+					// console.log( user );
+					// console.log( username );
+
+					if ( localStorage.getItem( "is_admin" ) == 0 )
+					{
+						var ht = "<tr> <td> " + username + " </td> <td class='the_user_get_messages'> </td> </tr>";
+
+						var table =  document.getElementById( "user_get_messages" );
+
+						table.innerHTML = table.innerHTML + ht;
+
+						j = table.childElementCount - 2;
+
+						tlk = JSON.parse( document.getElementById( "hidden_user_get" ).innerHTML );
+
+						var messages = document.getElementsByClassName( "the_user_get_messages" );
+						messages[j].innerHTML = tlk[j].message;
+					}
+					else
+					{
+						var ht = "<tr> <td> " + username + " </td> <td class='the_admin_get_messages'> </td> <td> <a class='admin_delete_get_talk'> Delete </a> </td> </tr>";
+
+						var table =  document.getElementById( "admin_get_messages" );
+
+						table.innerHTML = table.innerHTML + ht;
+
+						j = table.childElementCount - 2;
+
+						tlk = JSON.parse( document.getElementById( "hidden_admin_get" ).innerHTML );
+
+						var messages = document.getElementsByClassName( "the_admin_get_messages" );
+						messages[j].innerHTML = tlk[j].message;
+
+						messages = document.getElementsByClassName( "admin_delete_get_talk" );
+						messages[j].setAttribute( "onclick", "admin_deletes_talk(" + String( tlk[j].id ) + ")" );
+					}
+				});
+
+				localStorage.removeItem( "message" );
+			}
+
+		});
+
+		document.getElementById( "hidden_user_send" ).innerHTML = "";
+		document.getElementById( "hidden_admin_send" ).innerHTML = "";
+		document.getElementById( "hidden_user_get" ).innerHTML = "";
+		document.getElementById( "hidden_admin_get" ).innerHTML = "";
+
+		document.getElementById( "user_send_messages" ).innerHTML = "";
+		document.getElementById( "user_get_messages" ).innerHTML = "";
+		document.getElementById( "admin_send_messages" ).innerHTML = "";
+		document.getElementById( "admin_get_messages" ).innerHTML = "";
+    }
+
+    
+
+	document.addEventListener('load', refresh_talks() );
+    
+    setInterval(refresh_talks, 10000);
+
+   	function update( class_name )
+   	{
+		var user = [];
+        var inputs = document.getElementsByClassName( class_name );
+        console.log(inputs);
+        for ( i = 0; i < inputs.length; i = i + 1 )
+             user.push( inputs[i].value ); // does not function
+       	console.log(user);
+
+		eel.update_user( localStorage.getItem( "id" ), user[0], user[1], user[2], user[3], localStorage.getItem( "is_admin" ), user[4]);
+        localStorage.setItem( "username", user[0] );
+        localStorage.setItem( "password", user[1] );
+        localStorage.setItem( "fullname", user[2] );
+        localStorage.setItem( "age", Number( user[3] ) );
+        localStorage.setItem( "email", user[4] );
+   	}
+
+</script>
+
+</body>
+</html>
